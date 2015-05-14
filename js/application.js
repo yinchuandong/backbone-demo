@@ -1,12 +1,28 @@
 $(document).ready(function () {
+    index.getData();
+});
 
-    var item1 = new app.Item({id:"1", name:"yin"});
-    var item2 = new app.Item({id:"2", name:"wang"});
-    var itemList = new app.ItemCollection(item1);
-    itemList.add(item2);
+var index = {};
+index.getData = function(){
+    $.ajax({
+        url:"js/data.json",
+        dataType:'json',
+        type:'get',
+        success:function(data){
+            index.renderpage(data);
+
+        }
+    });
+}
+index.renderpage = function(data){
+    var itemList = new app.ItemCollection(item);
+    for(var i =0;i<data.length;i++){
+        var item = new app.Item(data[i]);
+        itemList.add(item);
+    }
     var itemListView = new app.ItemListView({
         model: itemList
     });
 
     $('#main').append(itemListView.render().$el);
-});
+}
